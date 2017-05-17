@@ -25,32 +25,26 @@ class FiguresController < ApplicationController
      @figure.landmarks << Landmark.create(params[:landmark])
    end
 
-
-
    if !params[:title][:name].empty?
      @figure.titles << Title.create(params[:title])
    end
 
    @figure.save
-     redirect to "/figures/#{@figure.id}"
-   end
+   redirect to "/figures/#{@figure.id}"
+  end
 
-   post '/figures/:id/' do
+   post '/figures/:id' do
      @figure = Figure.find(params[:id])
      @figure.update(params[:figure])
-
+     if !params[:title][:name].empty?
+       @figure.titles.build(name: params[:title][:name])
+     end
      if !params[:landmark][:name].empty?
-       @figure.titles << Title.create(params[:title])
+       @figure.landmarks.build(name: params[:landmark][:name])
      end
      @figure.save
      redirect to "/figures/#{@figure.id}"
-
    end
 
-
-# pass it back to each of the objects and via their params and then save each objects
-# first, I need to check if
-
-#{"figure"=>{"name"=>"Dog"}, "title"=>{"name"=>"god"}, "landmarks"=>["1"], "landmark"=>{"name"=>"Stat", "year_completed"=>"1978"}}
 
 end
